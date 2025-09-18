@@ -1,7 +1,16 @@
+import { createClient } from "@/app/utils/supabase/server";
+import { cookies } from "next/headers";
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ team: string }> }
 ) {
-  console.log(params);
-  return new Response("Hello, Next.js!");
+  const supabase = await createClient();
+  const {
+    data: instruments,
+    count,
+    status,
+  } = await supabase.from("instruments").select();
+
+  return new Response(JSON.stringify({ instruments, count, status }));
 }
