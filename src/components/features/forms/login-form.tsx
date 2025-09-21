@@ -14,9 +14,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoginFormSchema } from "@/types";
+import { login } from "@/lib/supabase/auth/actions";
+import { useState } from "react";
 
 const LoginForm = () => {
-  // 1. Define your form.
+  const [loading, setLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
@@ -25,13 +27,23 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof LoginFormSchema>) => {
-    console.log(values);
-    await login(values);
+  const handleLoginSubmit = async (values: z.infer<typeof LoginFormSchema>) => {
+    setLoading(true);
+    const { message } = await login(values);
+    if (message) {
+      form.setError("root", {
+        type: "manual",
+        message,
+      });
+      setLoading(false);
+    }
   };
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(handleLoginSubmit)}
+        className="space-y-4"
+      >
         <FormField
           control={form.control}
           name="email"
@@ -62,7 +74,12 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        {form.formState.errors.root && (
+          <FormMessage>{form.formState.errors.root.message}</FormMessage>
+        )}
+        <Button type="submit" disabled={!!loading}>
+          {loading ? "..." : "Submit"}
+        </Button>
       </form>
     </Form>
   );

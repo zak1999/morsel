@@ -1,14 +1,20 @@
-import AuthForm from "@/components/features/forms/auth/auth-form";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export default function Home() {
+const Home = () => {
   return (
     <div>
       <main className="h-screen justify-center flex items-center ">
-        <div className="flex flex-1 justify-center">
-          <AuthForm />
+        <div className="flex flex-1 justify-center bg-red-100">
+          <Button>
+            <Link href={"/login"}>Login</Link>
+          </Button>
         </div>
       </main>
+
       <footer></footer>
     </div>
   );
-}
+};
+
+export default Home;
