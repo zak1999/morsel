@@ -5,7 +5,10 @@ const middleware = async (req: NextRequest) => {
   return updateSession(req);
 };
 export const config = {
-  matcher: ["/private/:path*"],
+  matcher: [
+    "/private/:path*",
+    "/api/:path*", // protect all API routes],
+  ],
   /*
    * Match all request paths except for the ones starting with:
    * - _next/static (static files)
