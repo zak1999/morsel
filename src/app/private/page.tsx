@@ -1,3 +1,4 @@
+import SignoutButton from "@/components/features/buttons/signout-btn";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -9,5 +10,10 @@ export default async function PrivatePage() {
     redirect("/login");
   }
 
-  return <p>Hello {data.user.email}</p>;
+  return (
+    <div>
+      <p>Hello {data.user.email}</p>
+      <SignoutButton />
+    </div>
+  );
 }
