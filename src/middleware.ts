@@ -7,7 +7,7 @@ const middleware = async (req: NextRequest) => {
 export const config = {
   matcher: [
     "/private/:path*",
-    "/api/:path*", // protect all API routes],
+    // "/api/:path*", // protect all API routes],
   ],
   /*
    * Match all request paths except for the ones starting with:

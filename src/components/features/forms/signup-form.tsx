@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { email, z } from "zod";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,25 +12,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-const formSchema = z.object({
-  email: z.string().email({
-    message: "",
-  }),
-  username: z.string().min(2, {
-    message: "",
-  }),
-  password: z.string().min(6, {
-    message: "",
-  }),
-  confirmPassword: z.string().min(6, {
-    message: "",
-  }),
-});
+import { SignUpSchema } from "@/types";
+import { signup } from "@/lib/supabase/auth/actions";
 
 const SignupForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const [loading, setLoading] = useState<boolean>(false);
+  const [needToConfirmEmail, setNeedToConfirmEmail] = useState<boolean>(false);
+
+  const form = useForm<z.infer<typeof SignUpSchema>>({
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
       email: "",
       username: "",
@@ -38,9 +28,25 @@ const SignupForm = () => {
       confirmPassword: "",
     },
   });
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+
+  const onSubmit = async (values: z.infer<typeof SignUpSchema>) => {
+    setLoading(true);
+    const { message, success } = await signup(values);
+    if (!success) {
+      form.setError("root", {
+        type: "manual",
+        message,
+      });
+      setLoading(false);
+    } else {
+      setNeedToConfirmEmail(true);
+    }
   };
+
+  if (needToConfirmEmail) {
+    return <h1>need to confirm it in ya email m8</h1>;
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -106,7 +112,9 @@ const SignupForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={!!loading}>
+          {loading ? "..." : "Submit"}
+        </Button>
       </form>
     </Form>
   );
