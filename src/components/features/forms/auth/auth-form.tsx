@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
@@ -10,7 +9,6 @@ import {
 } from "@/components/ui/card";
 import SignupForm from "./signup-form";
 import LoginForm from "./login-form";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const AuthForm = () => {
