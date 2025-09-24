@@ -7,8 +7,8 @@ import { headers } from "next/headers";
 
 export const login = async (data: LoginFormType) => {
   const supabase = await createClient();
+  const origin = (await headers()).get("origin");
 
-  console.log(supabase);
   const { error } = await supabase.auth.signInWithPassword(data);
   if (error) {
     return {
@@ -16,7 +16,7 @@ export const login = async (data: LoginFormType) => {
     };
   } else {
     revalidatePath("/", "layout");
-    redirect("/");
+    redirect(origin || "/");
   }
 };
 
@@ -26,34 +26,47 @@ export const signup = async (data: SignUpFormType) => {
   const origin = (await headers()).get("origin");
   const { email, password, username } = data;
 
-  const { error, data: data2 } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        username: username,
-      },
-      emailRedirectTo: `${origin}/api/auth/callback`,
-    },
-  });
-  console.log(data2);
+  const { data: emailUsed } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("email", email)
+    .single();
 
-  console.log("error: ", error);
+  console.log("emailUsed", emailUsed);
+
+  if (emailUsed) {
+    return {
+      message: "A profile registered with this email already exists.",
+      success: false,
+    };
+  }
 
   // check the username is not already used:
-  const { data: userExists } = await supabase
+  const { data: usernameUsed } = await supabase
     .from("profiles")
     .select("id")
     .eq("username", username)
     .single();
 
-  if (userExists) {
+  if (usernameUsed) {
     return {
       message:
-        "A user with this username is already registered, please choose another.",
+        "A profile with this username is already registered, please choose another.",
       success: false,
     };
   }
+
+  const { error, data: data2 } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        username,
+      },
+      emailRedirectTo: `${origin}/api/auth/callback`,
+    },
+  });
+  console.log("data from auth.singup(): ", data2);
 
   if (error) {
     return {
@@ -61,10 +74,8 @@ export const signup = async (data: SignUpFormType) => {
       success: false,
     };
   } else {
-    // revalidatePath("/");
-    // redirect("/");
     return {
-      message: "There was an error creating your account.",
+      message: "Success",
       success: true,
     };
   }

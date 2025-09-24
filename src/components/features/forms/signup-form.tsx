@@ -28,6 +28,9 @@ const SignupForm = () => {
       confirmPassword: "",
     },
   });
+  const {
+    formState: { errors },
+  } = form;
 
   const onSubmit = async (values: z.infer<typeof SignUpSchema>) => {
     setLoading(true);
@@ -50,6 +53,9 @@ const SignupForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        {errors.root?.message && (
+          <FormMessage>{errors.root.message}</FormMessage>
+        )}
         <FormField
           control={form.control}
           name="email"
