@@ -118,9 +118,11 @@ const SignupForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={!!loading}>
-          {loading ? "..." : "Submit"}
-        </Button>
+        <div className="flex justify-end">
+          <Button type="submit" disabled={!!loading}>
+            {loading ? "..." : "Sign up"}
+          </Button>
+        </div>
       </form>
     </Form>
   );

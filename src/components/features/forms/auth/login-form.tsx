@@ -77,9 +77,11 @@ const LoginForm = () => {
         {form.formState.errors.root && (
           <FormMessage>{form.formState.errors.root.message}</FormMessage>
         )}
-        <Button type="submit" disabled={!!loading}>
-          {loading ? "..." : "Submit"}
-        </Button>
+        <div className="flex justify-end">
+          <Button className="" type="submit" disabled={!!loading}>
+            {loading ? "..." : "Login"}
+          </Button>
+        </div>
       </form>
     </Form>
   );
