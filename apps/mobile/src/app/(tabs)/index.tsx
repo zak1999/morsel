@@ -72,7 +72,10 @@ export default function HomeScreen() {
           <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
           <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
           <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
+          <ThemedText type="defaultSemiBold" className="text-4xl bg-green-400">
+            app-example
+          </ThemedText>
+          .
         </ThemedText>
 
         <View style={{ padding: 16, gap: 12 }}>
