@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
+import { Platform, StyleSheet, View } from 'react-native';
+import { useRouter } from 'expo-router';
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
@@ -74,6 +74,12 @@ export default function HomeScreen() {
           <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
         </ThemedText>
+
+        <View style={{ padding: 16, gap: 12 }}>
+          <ThemedText style={{ fontSize: 22, fontWeight: '600' }}>Foodboxd</ThemedText>
+          <Link href="/(auth)/sign-in">Sign in</Link>
+          <Link href="/sign-up">Create account</Link>
+        </View>
       </ThemedView>
     </ParallaxScrollView>
   );
