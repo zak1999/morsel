@@ -1,11 +1,11 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet, View } from 'react-native';
-import { useRouter } from 'expo-router';
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Link } from 'expo-router';
+import { Button } from 'heroui-native';
 
 export default function HomeScreen() {
   return (
@@ -20,6 +20,9 @@ export default function HomeScreen() {
     >
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Welcome!</ThemedText>
+        <Button className="bg-red-600">
+          <Button.Label>Click me</Button.Label>
+        </Button>
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
