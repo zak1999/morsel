@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, Text, TextInput, Pressable, Alert } from 'react-native';
 import { supabase } from '../../supabase';
 
-export const SignInScreen = () => {
+export default function SignInScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -52,4 +52,4 @@ export const SignInScreen = () => {
       </Pressable>
     </View>
   );
-};
+}
