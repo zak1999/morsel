@@ -19,14 +19,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <HeroUINativeProvider
-          config={{
-            textProps: {
-              minimumFontScale: 1.5,
-              // maxFontSizeMultiplier: 1.5,
-            },
-          }}
-        >
+        <HeroUINativeProvider>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
