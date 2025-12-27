@@ -1,15 +1,42 @@
-import { Link } from 'expo-router';
-import { Button } from 'heroui-native';
-import { Text, View } from 'react-native';
+import { Image } from 'expo-image';
+import { StyleSheet, Text, View } from 'react-native';
+import { useAuthContext } from '@/hooks/use-auth-context';
+import SignOutButton from '@/components/logout';
 
-export default function Index() {
+export default function HomeScreen() {
+  const { profile } = useAuthContext();
+
   return (
-    <View className="flex flex-1 bg-slate-700 items-center justify-center">
-      <Text className="text-white">Edit app/index.tsx to edit this screen.</Text>
-
-      <Button variant="primary">
-        <Link href={'/about'}>take me to the about page</Link>
-      </Button>
+    <View>
+      <View style={styles.titleContainer}>
+        <Text>Welcome!</Text>
+        <View style={styles.stepContainer}>
+          <Text>Username</Text>
+          <Text>{profile?.username}</Text>
+          <Text>Full name</Text>
+          <Text>{profile?.full_name}</Text>
+        </View>
+      </View>
+      <SignOutButton />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  stepContainer: {
+    gap: 8,
+    marginBottom: 8,
+  },
+  reactLogo: {
+    height: 178,
+    width: 290,
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+  },
+});
