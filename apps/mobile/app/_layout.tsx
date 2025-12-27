@@ -2,6 +2,27 @@ import { Stack } from 'expo-router';
 import '../global.css';
 import { HeroUINativeProvider } from 'heroui-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useAuthContext } from '@/hooks/use-auth-context';
+import { SplashScreenController } from '@/components/splash-screen-controller';
+import AuthProvider from '@/providers/auth-provider';
+
+// Separate RootNavigator so we can access the AuthContext
+function RootNavigator() {
+  const { isLoggedIn } = useAuthContext();
+  console.log('isLoggedIn _layout RootNavigator: ', isLoggedIn);
+
+  return (
+    <Stack>
+      <Stack.Protected guard={isLoggedIn}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={!isLoggedIn}>
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Screen name="+not-found" />
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   return (
@@ -10,9 +31,10 @@ export default function RootLayout() {
       //  TODO: at some point have a look at this:
       // https://v3.heroui.com/docs/native/getting-started/provider
       >
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
+        <AuthProvider>
+          <SplashScreenController />
+          <RootNavigator />
+        </AuthProvider>
       </HeroUINativeProvider>
     </GestureHandlerRootView>
   );
