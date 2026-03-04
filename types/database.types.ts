@@ -1,5 +1,8 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
+// run this to update the types if the db schema has been updated:
+// bun supabase gen types typescript --project-id [id] > types/database.types.ts
+
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
