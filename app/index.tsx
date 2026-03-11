@@ -4,19 +4,13 @@ import { Text, View } from "react-native";
 export default function Index() {
   const { data: test, error, isLoading } = useTestProfile();
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <View className="bg-yellow-400 flex m-auto">
       {isLoading ? (
-        <Text>Loading...</Text>
+        <Text className="text-3xl">Loading...</Text>
       ) : error ? (
-        <Text>Error: {error.message}</Text>
+        <Text className="">Error: {error.message}</Text>
       ) : (
-        <Text>{JSON.stringify(test)}</Text>
+        <Text className="text-3xl">{JSON.stringify(test)}</Text>
       )}
       <Text>Edit app/index.tsx to edit this screen.</Text>
     </View>
